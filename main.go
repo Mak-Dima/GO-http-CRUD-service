@@ -18,8 +18,8 @@ func main() {
 		MaxHeaderBytes: 1 << 20,
 	}
 	var defaultDB = db.DefaultDB{}
-	err := defaultDB.Load()
 
+	err := defaultDB.Load()
 	if err != nil {
 		log.Fatalf("Failed to load database: %v", err)
 	}

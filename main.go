@@ -4,6 +4,8 @@ import (
 	"log"
 	"net/http"
 	"time"
+
+	"CRUD-service/db"
 )
 
 func main() {
@@ -15,6 +17,12 @@ func main() {
 		WriteTimeout:   10 * time.Second,
 		MaxHeaderBytes: 1 << 20,
 	}
+	var defaultDB = db.DefaultDB{}
+	err := defaultDB.Load()
+
+	if err != nil {
+		log.Fatalf("Failed to load database: %v", err)
+	}
 
 	srvMux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
@@ -22,8 +30,14 @@ func main() {
 	})
 
 	srvMux.HandleFunc("/read", func(w http.ResponseWriter, r *http.Request) {
+		data, err := defaultDB.DataToByteSlice()
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			w.Write([]byte("Failed to read data"))
+		}
+
 		w.WriteHeader(http.StatusOK)
-		w.Write([]byte("This is the read endpoint."))
+		w.Write(data)
 	})
 
 	srvMux.HandleFunc("/write", func(w http.ResponseWriter, r *http.Request) {

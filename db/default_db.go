@@ -24,3 +24,12 @@ func (db DefaultDB) Load() error {
 
 	return nil
 }
+
+func (db DefaultDB) DataToByteSlice() ([]byte, error) {
+	data, err := json.Marshal(db.data)
+	if err != nil {
+		return data, err
+	}
+
+	return data, nil
+}

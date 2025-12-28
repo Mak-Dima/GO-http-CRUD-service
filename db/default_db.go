@@ -2,8 +2,10 @@ package db
 
 import (
 	"CRUD-service/pkg/entities"
+	"CRUD-service/utils"
 	"encoding/json"
 	"os"
+	"path"
 )
 
 type DefaultDB struct {
@@ -11,8 +13,9 @@ type DefaultDB struct {
 }
 
 func (db DefaultDB) Load() error {
-	fileName := "default.json"
-	data, err := os.ReadFile(fileName)
+	projectDir, err := utils.GetProjectRoot()
+	fileName := "db/default.json"
+	data, err := os.ReadFile(path.Join(projectDir, fileName))
 	if err != nil {
 		return err
 	}

@@ -7,9 +7,9 @@ import (
 )
 
 func RegisterDefaultRoutes(mux *http.ServeMux, defaultDB *db.DefaultDB) {
-
-	mux.HandleFunc("/read", handlers_default.ReadAllDataHandler(defaultDB))
-	mux.HandleFunc("/write", handlers_default.WriteDataHandler(defaultDB))
-	mux.HandleFunc("/update", handlers_default.UpdateDataHandler(defaultDB))
-	mux.HandleFunc("/delete", handlers_default.DeleteDataHandler(defaultDB))
+	const basePath = "/default"
+	mux.HandleFunc(basePath+"/read", handlers_default.ReadAllDataHandler(defaultDB))
+	mux.HandleFunc(basePath+"/write", handlers_default.WriteDataHandler(defaultDB))
+	mux.HandleFunc(basePath+"/update", handlers_default.UpdateDataHandler(defaultDB))
+	mux.HandleFunc(basePath+"/delete", handlers_default.DeleteDataHandler(defaultDB))
 }

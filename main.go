@@ -17,11 +17,9 @@ func main() {
 		WriteTimeout:   10 * time.Second,
 		MaxHeaderBytes: 1 << 20,
 	}
-	var defaultDB = db.DefaultDB{}
-
-	err := defaultDB.Load()
-	if err != nil {
-		log.Fatalf("Failed to load database: %v", err)
+	var defaultDB = db.NewDefaultDB()
+	if defaultDB == nil {
+		log.Fatal("Failed to initialize the default database")
 	}
 
 	srvMux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {

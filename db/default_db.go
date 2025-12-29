@@ -13,7 +13,17 @@ type DefaultDB struct {
 	data []entities.DefaultEntity
 }
 
-func (db *DefaultDB) Load() error {
+func NewDefaultDB() *DefaultDB {
+	db := new(DefaultDB)
+	err := db.load()
+	if err != nil {
+		return nil
+	}
+
+	return db
+}
+
+func (db *DefaultDB) load() error {
 	projectDir, err := utils.GetProjectRoot()
 	fileName := "db/default.json"
 	data, err := os.ReadFile(path.Join(projectDir, fileName))

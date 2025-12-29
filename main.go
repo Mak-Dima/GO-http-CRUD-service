@@ -25,30 +25,10 @@ func main() {
 
 	routers.RegisterDefaultRoutes(srvMux, defaultDB)
 
-	srvMux.HandleFunc("/read", func(w http.ResponseWriter, r *http.Request) {
-		data, err := defaultDB.DataToByteSlice()
-		if err != nil {
-			w.WriteHeader(http.StatusInternalServerError)
-			w.Write([]byte("Failed to read data"))
-		}
-
+	srvMux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "text/html")
 		w.WriteHeader(http.StatusOK)
-		w.Write(data)
-	})
-
-	srvMux.HandleFunc("/write", func(w http.ResponseWriter, r *http.Request) {
-		w.WriteHeader(http.StatusCreated)
-		w.Write([]byte("This is the write endpoint."))
-	})
-
-	srvMux.HandleFunc("/update", func(w http.ResponseWriter, r *http.Request) {
-		w.WriteHeader(http.StatusOK)
-		w.Write([]byte("This is update endpoint."))
-	})
-
-	srvMux.HandleFunc("/delete", func(w http.ResponseWriter, r *http.Request) {
-		w.WriteHeader(http.StatusOK)
-		w.Write([]byte("This is delete endpoint."))
+		w.Write([]byte("<h1>I am roooot</h1>"))
 	})
 
 	log.Fatal(server.ListenAndServe())

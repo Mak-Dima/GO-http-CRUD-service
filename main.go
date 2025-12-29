@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"time"
 
+	"CRUD-service/api/routers"
 	"CRUD-service/db"
 )
 
@@ -22,10 +23,7 @@ func main() {
 		log.Fatal("Failed to initialize the default database")
 	}
 
-	srvMux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		w.WriteHeader(http.StatusOK)
-		w.Write([]byte("Hello, World!"))
-	})
+	routers.RegisterDefaultRoutes(srvMux, defaultDB)
 
 	srvMux.HandleFunc("/read", func(w http.ResponseWriter, r *http.Request) {
 		data, err := defaultDB.DataToByteSlice()

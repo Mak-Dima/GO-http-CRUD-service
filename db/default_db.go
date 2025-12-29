@@ -25,8 +25,8 @@ func NewDefaultDB() *DefaultDB {
 
 func (db *DefaultDB) load() error {
 	projectDir, err := utils.GetProjectRoot()
-	fileName := "db/default.json"
-	data, err := os.ReadFile(path.Join(projectDir, fileName))
+	filePath := "db/datafiles/default.json"
+	data, err := os.ReadFile(path.Join(projectDir, filePath))
 	if err != nil {
 		return err
 	}

@@ -4,13 +4,14 @@ import (
 	"CRUD-service/pkg/entities"
 	"CRUD-service/utils"
 	"encoding/json"
-	"fmt"
 	"os"
 	"path"
+	"strconv"
 )
 
 type DefaultDB struct {
-	data []entities.DefaultEntity
+	conter int
+	data   []entities.DefaultEntity
 }
 
 func NewDefaultDB() *DefaultDB {
@@ -36,11 +37,12 @@ func (db *DefaultDB) load() error {
 		return err
 	}
 
+	db.conter, err = strconv.Atoi(db.data[len(db.data)-1].ID)
+
 	return nil
 }
 
 func (db *DefaultDB) DataToByteSlice() ([]byte, error) {
-	fmt.Println(db.data)
 	data, err := json.Marshal(db.data)
 	if err != nil {
 		return data, err

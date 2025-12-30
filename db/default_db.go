@@ -9,6 +9,8 @@ import (
 	"strconv"
 )
 
+const filePath = "db/datafiles/default.json"
+
 type DefaultDB struct {
 	conter int
 	data   []entities.DefaultEntity
@@ -26,7 +28,6 @@ func NewDefaultDB() *DefaultDB {
 
 func (db *DefaultDB) load() error {
 	projectDir, err := utils.GetProjectRoot()
-	filePath := "db/datafiles/default.json"
 	data, err := os.ReadFile(path.Join(projectDir, filePath))
 	if err != nil {
 		return err
@@ -49,4 +50,27 @@ func (db *DefaultDB) DataToByteSlice() ([]byte, error) {
 	}
 
 	return data, nil
+}
+
+func (db *DefaultDB) WriteNewEntity(entity entities.DefaultEntity) error {
+	db.conter++
+	entity.ID = strconv.Itoa(db.conter)
+	db.data = append(db.data, entity)
+
+	data, err := db.DataToByteSlice()
+	if err != nil {
+		return err
+	}
+
+	projectDir, err := utils.GetProjectRoot()
+	if err != nil {
+		return err
+	}
+
+	err = os.WriteFile(path.Join(projectDir, filePath), data, 0644)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

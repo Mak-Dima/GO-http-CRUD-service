@@ -4,6 +4,7 @@ import (
 	"CRUD-service/pkg/entities"
 	"CRUD-service/utils"
 	"encoding/json"
+	"errors"
 	"os"
 	"path"
 	"strconv"
@@ -73,4 +74,32 @@ func (db *DefaultDB) WriteNewEntity(entity entities.DefaultEntity) error {
 	}
 
 	return nil
+}
+
+func (db *DefaultDB) UpdateEntity(entity entities.DefaultEntity) error {
+
+	for i, e := range db.data {
+		if e.ID == entity.ID {
+			db.data[i] = entity
+
+			data, err := db.DataToByteSlice()
+			if err != nil {
+				return err
+			}
+
+			projectDir, err := utils.GetProjectRoot()
+			if err != nil {
+				return err
+			}
+
+			err = os.WriteFile(path.Join(projectDir, filePath), data, 0644)
+			if err != nil {
+				return err
+			}
+
+			return nil
+		}
+	}
+
+	return errors.New("Entity not found.")
 }

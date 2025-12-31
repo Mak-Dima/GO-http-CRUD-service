@@ -4,7 +4,6 @@ import (
 	"CRUD-service/db"
 	"CRUD-service/pkg/entities"
 	"encoding/json"
-	"fmt"
 	"net/http"
 )
 
@@ -13,7 +12,6 @@ func WriteDataHandler(defaultDB *db.DefaultDB) http.HandlerFunc {
 		buffer := make([]byte, r.ContentLength)
 		r.Body.Read(buffer)
 
-		fmt.Println("Received data to write:", string(buffer))
 		var entity entities.DefaultEntity
 		err := json.Unmarshal(buffer, &entity)
 		if err != nil {

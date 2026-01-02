@@ -103,3 +103,30 @@ func (db *DefaultDB) UpdateEntity(entity entities.DefaultEntity) error {
 
 	return errors.New("Entity not found.")
 }
+
+func (db *DefaultDB) DeleteEntity(id string) error {
+	for i, e := range db.data {
+		if e.ID == id {
+			db.data = append(db.data[:i], db.data[i+1:]...)
+
+			data, err := db.DataToByteSlice()
+			if err != nil {
+				return err
+			}
+
+			projectDir, err := utils.GetProjectRoot()
+			if err != nil {
+				return err
+			}
+
+			err = os.WriteFile(path.Join(projectDir, filePath), data, 0644)
+			if err != nil {
+				return err
+			}
+
+			break
+		}
+	}
+
+	return nil
+}
